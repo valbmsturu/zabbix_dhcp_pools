@@ -1,0 +1,23 @@
+ddns-update-style none;
+
+default-lease-time 600;
+max-lease-time 7200;
+
+option domain-name "corp13.un";
+option domain-name-servers 192.168.13.10;
+
+shared-network LAN1 {
+  subnet 192.168.13.0 netmask 255.255.255.0 {
+    range 192.168.13.101 192.168.13.109;
+    option routers 192.168.13.1;
+  }
+}
+
+shared-network LAN2 {
+  subnet 192.168.113.0 netmask 255.255.255.0 {
+    range 192.168.113.101 192.168.113.109;
+    option routers 192.168.113.1;
+  }
+}
+
+
