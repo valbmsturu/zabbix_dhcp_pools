@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<zabbix_export>
+    <version>5.0</version>
+    <date>2020-10-08T09:43:50Z</date>
+    <groups>
+        <group>
+            <name>Templates/Applications</name>
+        </group>
+    </groups>
+    <templates>
+        <template>
+            <template>Template App DHCP Pools</template>
+            <name>Template App DHCP Pools</name>
+            <groups>
+                <group>
+                    <name>Templates/Applications</name>
+                </group>
+            </groups>
+            <applications>
+                <application>
+                    <name>DHCP</name>
+                </application>
+            </applications>
+            <discovery_rules>
+                <discovery_rule>
+                    <name>Search DHCP Pools</name>
+                    <key>dhcp.pools.discovery</key>
+                    <item_prototypes>
+                        <item_prototype>
+                            <name>DHCP Pool {#POOLNAME} max addr</name>
+                            <key>dhcp.pools.shared-network[{#POOLNAME},defined]</key>
+                            <applications>
+                                <application>
+                                    <name>DHCP</name>
+                                </application>
+                            </applications>
+                        </item_prototype>
+                        <item_prototype>
+                            <name>DHCP Pool {#POOLNAME} cur addr</name>
+                            <key>dhcp.pools.shared-network[{#POOLNAME},used]</key>
+                            <applications>
+                                <application>
+                                    <name>DHCP</name>
+                                </application>
+                            </applications>
+                        </item_prototype>
+                    </item_prototypes>
+                    <trigger_prototypes>
+                        <trigger_prototype>
+                            <expression>{Template App DHCP Pools:dhcp.pools.shared-network[{#POOLNAME},used].last()}/{Template App DHCP Pools:dhcp.pools.shared-network[{#POOLNAME},defined].last()}*100 &gt; {$DHCP.POOLS.MAX.PERCENT}</expression>
+                            <name>On {HOST.NAME} in the DHCP pool {#POOLNAME}</name>
+                            <priority>WARNING</priority>
+                        </trigger_prototype>
+                    </trigger_prototypes>
+                    <graph_prototypes>
+                        <graph_prototype>
+                            <name>DHCP Pool {#POOLNAME} max cur</name>
+                            <ymin_type_1>FIXED</ymin_type_1>
+                            <graph_items>
+                                <graph_item>
+                                    <sortorder>1</sortorder>
+                                    <drawtype>BOLD_LINE</drawtype>
+                                    <color>1A7C11</color>
+                                    <item>
+                                        <host>Template App DHCP Pools</host>
+                                        <key>dhcp.pools.shared-network[{#POOLNAME},used]</key>
+                                    </item>
+                                </graph_item>
+                                <graph_item>
+                                    <sortorder>2</sortorder>
+                                    <drawtype>BOLD_LINE</drawtype>
+                                    <color>F63100</color>
+                                    <item>
+                                        <host>Template App DHCP Pools</host>
+                                        <key>dhcp.pools.shared-network[{#POOLNAME},defined]</key>
+                                    </item>
+                                </graph_item>
+                            </graph_items>
+                        </graph_prototype>
+                    </graph_prototypes>
+                </discovery_rule>
+            </discovery_rules>
+            <macros>
+                <macro>
+                    <macro>{$DHCP.POOLS.MAX.PERCENT}</macro>
+                    <value>90</value>
+                </macro>
+            </macros>
+        </template>
+    </templates>
+</zabbix_export>
